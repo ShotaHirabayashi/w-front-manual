@@ -59,7 +59,6 @@ langchain==0.3.14
 langchain-community==0.3.14
 langchain-core==0.3.29
 langchain-openai==0.2.0
-langchain-text-splitters==0.3.0
 langgraph==0.2.23
 langgraph-checkpoint==1.0.10
 langserve==0.3.0
