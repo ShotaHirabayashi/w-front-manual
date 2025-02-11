@@ -3,18 +3,13 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 
-import sys
-import pysqlite3
-
-sys.modules["sqlite3"] = pysqlite3
-
 # Streamlitの設定
 st.set_page_config(page_title="Chatbot", layout="wide")
 
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
 llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="gpt-4o-mini")
-db = Chroma(persist_directory="./wdb", embedding_function=embeddings_model)
+db = Chroma(collection_name="./wdb", embedding_function=embeddings_model)
 
 # プロンプトテンプレート
 template = """
