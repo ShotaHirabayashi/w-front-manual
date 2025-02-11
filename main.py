@@ -2,7 +2,11 @@ import streamlit as st
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
-import config
+
+import sys
+import pysqlite3
+
+sys.modules["sqlite3"] = pysqlite3
 
 # Streamlitの設定
 st.set_page_config(page_title="Chatbot", layout="wide")
