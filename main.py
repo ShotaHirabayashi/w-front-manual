@@ -1,7 +1,7 @@
 import streamlit as st
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-import Chroma
+from langchain_chroma import Chroma
 
 # Streamlitの設定
 st.set_page_config(page_title="Chatbot", layout="wide")
