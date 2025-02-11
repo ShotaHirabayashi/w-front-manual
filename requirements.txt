@@ -27,7 +27,6 @@ Deprecated==1.2.14
 distro==1.9.0
 durationpy==0.7
 executing==2.1.0
-fastapi==0.115.0
 filelock==3.16.1
 Flask==3.0.3
 flatbuffers==24.3.25
@@ -58,8 +57,8 @@ jsonpointer==3.0.0
 kiwisolver==1.4.7
 kubernetes==31.0.0
 langchain==0.3.4
-langchain-community==0.3.0
-langchain-core==0.3.12
+langchain-community==0.3.14
+langchain-core==0.3.29
 langchain-openai==0.2.0
 langchain-text-splitters==0.3.0
 langgraph==0.2.23
