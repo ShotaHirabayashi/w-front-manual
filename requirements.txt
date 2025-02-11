@@ -6,3 +6,4 @@ langchain==0.3.14
 langchain-community==0.3.14
 langchain-core==0.3.29
 streamlit==1.41.1
+pysqlite3-binary==0.4.3
