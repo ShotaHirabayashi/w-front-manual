@@ -57,10 +57,7 @@ kiwisolver==1.4.7
 kubernetes==31.0.0
 langchain==0.3.14
 langchain-openai==0.2.0
-langgraph==0.2.23
-langgraph-checkpoint==1.0.10
-langserve==0.3.0
-langsmith==0.1.125
+langchain-chroma==0.1.2
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 marshmallow==3.22.0
@@ -146,4 +143,3 @@ wrapt==1.16.0
 yarl==1.11.1
 zipp==3.20.2
 streamlit==1.41.1
-langchain-chroma==0.1.2
