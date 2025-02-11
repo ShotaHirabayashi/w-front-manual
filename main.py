@@ -4,9 +4,8 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 
 import sys
-import pysqlite3
 
-sys.modules["sqlite3"] = pysqlite3
+sys.modules["sqlite3"] = sys.modules.pop('pysqlite3')
 
 
 # Streamlitの設定
