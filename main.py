@@ -61,8 +61,7 @@ if question:
 
     # 回答生成
     response, document_snippet = chatbot(question)
-    # st.session_state.messages.append({"role": "assistant", "content": response})
-    st.session_state.messages.append({"role": "assistant", "content": document_snippet})
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
     with st.chat_message("assistant"):
         st.markdown(response)
