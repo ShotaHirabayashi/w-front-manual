@@ -35,7 +35,7 @@ def chatbot(question):
     document_snippet = db.similarity_search_by_vector(question_embedding, k=2)
     filled_prompt = prompt.format(document_snippet=document_snippet, question=question)
     response = llm.invoke(filled_prompt)
-    return response.content
+    return response.content, document_snippet
 
 
 # StreamlitのUI構築
@@ -60,8 +60,9 @@ if question:
         st.markdown(question)
 
     # 回答生成
-    response = chatbot(question)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    response, document_snippet = chatbot(question)
+    # st.session_state.messages.append({"role": "assistant", "content": response})
+    st.session_state.messages.append({"role": "assistant", "content": document_snippet})
 
     with st.chat_message("assistant"):
         st.markdown(response)
