@@ -31,7 +31,6 @@ with open("./output/text_chunks.txt", "w", encoding="utf-8") as file:
 
 
 db = Chroma.from_documents(
-    collection_name='collection_name_server',
     documents=documents,
     embedding=OpenAIEmbeddings(api_key=config.OPENAI_API_KEY),
     persist_directory='wdb'
