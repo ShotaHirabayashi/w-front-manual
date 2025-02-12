@@ -3,3 +3,4 @@
 # 不要ファイル
 .idea
  __pycache__/
+ ./config.py

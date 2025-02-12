@@ -7,18 +7,8 @@ from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 
-# import sys
-# sys.modules["sqlite3"] = sys.modules.pop('pysqlite3')
-
-# __import__('pysqlite3')
-# import sys
-# import pysqlite3
-# sys.modules['sqlite3'] = pysqlite3
-
-
-
 # Streamlitの設定
-st.set_page_config(page_title="Chatbot", layout="wide")
+st.set_page_config(page_title="Wフロントマニュアル", layout="wide")
 
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
