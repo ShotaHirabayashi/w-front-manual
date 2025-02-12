@@ -23,7 +23,7 @@ st.set_page_config(page_title="Chatbot", layout="wide")
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
 llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="gpt-4o-mini")
-db = Chroma(collection_name="collection_name_server", ersist_directory="./wdb", embedding_function=embeddings_model)
+db = Chroma(collection_name="collection_name_server", persist_directory="./wdb", embedding_function=embeddings_model)
 
 # プロンプトテンプレート
 template = """
