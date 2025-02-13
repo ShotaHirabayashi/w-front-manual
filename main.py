@@ -10,6 +10,10 @@ from langchain_chroma import Chroma
 # Streamlitの設定
 st.set_page_config(page_title="Wフロントマニュアル", layout="wide")
 
+# StreamlitのUI構築
+st.title("📄 Wフロントアシスタント")
+st.write("マニュアルに基づいた質問応答システムです。質問を入力してください。")
+
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
 llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="gpt-4o-mini")
@@ -18,7 +22,8 @@ db = Chroma(collection_name="collection_name_server", persist_directory="./wdb",
 # プロンプトテンプレート
 template = """
 あなたはドキュメントに基づいて質問に答えるアシスタントです。以下のドキュメントに基づいて質問に答えてください。
-もし記載にないことが問われた場合は、わからないことを伝えてください。
+ドキュメントの内容はレジャーホテルのフロント業務に関するものです。
+もし記載にないことが問われた場合は、「わかりません。」を伝えてください。
 
 ドキュメント：{document_snippet}
 
@@ -26,21 +31,17 @@ template = """
 
 答え：
 """
-prompt = PromptTemplate(input_variables=["document_snippet", "question"], template=template)
-
 
 # チャットボット関数
 def chatbot(question):
     question_embedding = embeddings_model.embed_query(question)
     document_snippet = db.similarity_search_by_vector(question_embedding, k=2)
+
+    prompt = PromptTemplate(input_variables=["document_snippet", "question"], template=template)
     filled_prompt = prompt.format(document_snippet=document_snippet, question=question)
+
     response = llm.invoke(filled_prompt)
     return response.content, document_snippet
-
-
-# StreamlitのUI構築
-st.title("📄 Wフロントアシスタント")
-st.write("マニュアルに基づいた質問応答システムです。質問を入力してください。")
 
 # ユーザー入力
 if "messages" not in st.session_state:
