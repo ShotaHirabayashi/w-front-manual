@@ -16,7 +16,8 @@ st.write("マニュアルに基づいた質問応答システムです。質問�
 
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
-llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="gpt-4o-mini")
+llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'],
+                 model="gpt-4o-mini", temperature=0, max_tokens=150, top_p=0)
 db = Chroma(collection_name="collection_name_server", persist_directory="./wdb", embedding_function=embeddings_model)
 
 # プロンプトテンプレート
@@ -35,7 +36,7 @@ template = """
 # チャットボット関数
 def chatbot(question):
     question_embedding = embeddings_model.embed_query(question)
-    document_snippet = db.similarity_search_by_vector(question_embedding, k=2)
+    document_snippet = db.similarity_search_by_vector(question_embedding, k=3)
 
     prompt = PromptTemplate(input_variables=["document_snippet", "question"], template=template)
     filled_prompt = prompt.format(document_snippet=document_snippet, question=question)
