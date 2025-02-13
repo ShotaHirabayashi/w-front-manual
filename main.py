@@ -16,8 +16,12 @@ st.write("マニュアルに基づいた質問応答システムです。質問�
 
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
+
+
 llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'],
-                 model="gpt-4o-mini", temperature=0, max_tokens=150, top_p=0)
+                 model="gpt-4o-mini", temperature=0, max_tokens=200, top_p=0, frequency_penalty=-2, presence_penalty=-2)
+
+
 db = Chroma(collection_name="collection_name_server", persist_directory="./wdb", embedding_function=embeddings_model)
 
 # プロンプトテンプレート
