@@ -54,7 +54,7 @@ loader = DirectoryLoader(
 data = loader.load()
 
 text_splitter = CharacterTextSplitter(
-    chunk_size=100,
+    chunk_size=300,
     separator='=====',
     chunk_overlap=0,
     length_function=len
