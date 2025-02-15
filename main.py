@@ -1,6 +1,6 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import streamlit as st
 from langchain.prompts import PromptTemplate
@@ -24,28 +24,34 @@ llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'],
 
 db = Chroma(collection_name='wdb',persist_directory="./wdb", embedding_function=embeddings_model)
 
-# プロンプトテンプレート
-template = """
+prompt = PromptTemplate(
+    input_variables=["document_snippet", "question"],
+    template="""
 あなたはドキュメントに基づいて質問に答えるアシスタントです。以下のドキュメントに基づいて質問に答えてください。質問者は質問形式で質問してこない可能性もあり、文章を汲み取って相手が知りたいことを返してください。
 ドキュメントの内容はレジャーホテルのフロント業務に関するものです。できる限りドキュメントから情報を読み取り回答する意識をもってください。
 もし記載にないことが問われた場合は、「わかりません。」を伝えてください。ただしあまりにも多くの質問に「わかりません。」と答えると、ユーザーに不親切だと思われるかもしれません。
 文章は適切に返答し、適当な文章は返答しないようにしてください。
 
-ドキュメント：{document_snippet}
+    ドキュメント：
+    {document_snippet}
 
-質問：{question}
+    質問：{question}
 
-答え：
-"""
+    答え：
+    """
+)
+
+
 
 # チャットボット関数
 def chatbot(question):
     question_embedding = embeddings_model.embed_query(question)
     document_snippet = db.similarity_search_by_vector(question_embedding, k=3)
-    print(document_snippet)
-    prompt = PromptTemplate(input_variables=["document_snippet", "question"], template=template)
-    filled_prompt = prompt.format(document_snippet=document_snippet, question=question)
-
+    snippets = [doc.page_content for doc in document_snippet]
+    snippets = "\n---\n".join(snippets)
+    print(f'question: {question}')
+    print(snippets)
+    filled_prompt = prompt.format(document_snippet=snippets, question=question)
     response = llm.invoke(filled_prompt)
     return response.content, document_snippet
 
