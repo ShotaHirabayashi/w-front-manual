@@ -1,6 +1,6 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import streamlit as st
 from langchain.prompts import PromptTemplate
@@ -19,16 +19,17 @@ embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY
 
 
 llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'],
-                 model="gpt-4o-mini", temperature=0, max_tokens=200, top_p=0, frequency_penalty=-2, presence_penalty=-2)
+                 model="gpt-4o-mini", temperature=0, max_tokens=200, top_p=0)
 
 
-db = Chroma(collection_name="collection_name_server", persist_directory="./wdb", embedding_function=embeddings_model)
+db = Chroma(collection_name='wdb',persist_directory="./wdb", embedding_function=embeddings_model)
 
 # プロンプトテンプレート
 template = """
-あなたはドキュメントに基づいて質問に答えるアシスタントです。以下のドキュメントに基づいて質問に答えてください。
+あなたはドキュメントに基づいて質問に答えるアシスタントです。以下のドキュメントに基づいて質問に答えてください。質問者は質問形式で質問してこない可能性もあり、文章を汲み取って相手が知りたいことを返してください。
 ドキュメントの内容はレジャーホテルのフロント業務に関するものです。できる限りドキュメントから情報を読み取り回答する意識をもってください。
 もし記載にないことが問われた場合は、「わかりません。」を伝えてください。ただしあまりにも多くの質問に「わかりません。」と答えると、ユーザーに不親切だと思われるかもしれません。
+文章は適切に返答し、適当な文章は返答しないようにしてください。
 
 ドキュメント：{document_snippet}
 
@@ -41,7 +42,7 @@ template = """
 def chatbot(question):
     question_embedding = embeddings_model.embed_query(question)
     document_snippet = db.similarity_search_by_vector(question_embedding, k=3)
-
+    print(document_snippet)
     prompt = PromptTemplate(input_variables=["document_snippet", "question"], template=template)
     filled_prompt = prompt.format(document_snippet=document_snippet, question=question)
 
@@ -59,7 +60,7 @@ for message in st.session_state.messages:
 
 # ユーザーの質問入力
 question = st.chat_input("質問を入力してください...")
-
+print(f'question: {question}')
 if question:
     st.session_state.messages.append({"role": "user", "content": question})
     with st.chat_message("user"):

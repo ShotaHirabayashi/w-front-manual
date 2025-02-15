@@ -16,6 +16,8 @@ def normalize_separators(text, separator="\n=====\n"):
     # 例: 「=====」の前後にある改行や空白を除去し、正確に "\n=====\n" に置換する
     pattern = r'\n*\s*={5,}\s*\n*'
     normalized_text = re.sub(pattern, separator, text)
+    # 改行をなくす
+    normalized_text = re.sub(r'\n+', '\n', normalized_text)
     return normalized_text
 
 
@@ -54,13 +56,17 @@ loader = DirectoryLoader(
 data = loader.load()
 
 text_splitter = CharacterTextSplitter(
-    chunk_size=300,
+    chunk_size=200,
     separator='=====',
     chunk_overlap=0,
     length_function=len
 )
 
-documents = text_splitter.create_documents([doc.page_content for doc in data])
+
+texts = [doc.page_content for doc in data]
+# metadata = [doc.metadata for doc in data]
+documents = text_splitter.create_documents(texts)
+print(documents)
 
 with open("./output/text_chunks.txt", "w", encoding="utf-8") as file:
     for text in documents:
@@ -69,6 +75,7 @@ with open("./output/text_chunks.txt", "w", encoding="utf-8") as file:
 
 
 db = Chroma.from_documents(
+    collection_name='wdb',
     documents=documents,
     embedding=OpenAIEmbeddings(api_key=config.OPENAI_API_KEY),
     persist_directory='wdb'
