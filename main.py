@@ -8,11 +8,11 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 
 # Streamlitの設定
-st.set_page_config(page_title="Wフロントマニュアル", layout="wide")
+st.set_page_config(page_title="Wフロントマニュアル", page_icon="📄", layout="wide")
 
 # StreamlitのUI構築
-st.title("📄 Wフロントアシスタント")
-st.write("マニュアルに基づいた質問応答システムです。質問を入力してください。")
+st.title("📄 山崎本部長AI")
+st.write("山崎本部長に質問できます。")
 
 # OpenAIの設定
 embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY'], model="text-embedding-3-small")
@@ -49,8 +49,6 @@ def chatbot(question):
     document_snippet = db.similarity_search_by_vector(question_embedding, k=3)
     snippets = [doc.page_content for doc in document_snippet]
     snippets = "\n---\n".join(snippets)
-    print(f'question: {question}')
-    print(snippets)
     filled_prompt = prompt.format(document_snippet=snippets, question=question)
     response = llm.invoke(filled_prompt)
     return response.content, document_snippet
@@ -66,7 +64,6 @@ for message in st.session_state.messages:
 
 # ユーザーの質問入力
 question = st.chat_input("質問を入力してください...")
-print(f'question: {question}')
 if question:
     st.session_state.messages.append({"role": "user", "content": question})
     with st.chat_message("user"):
