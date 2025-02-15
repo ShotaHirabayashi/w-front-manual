@@ -19,7 +19,7 @@ embeddings_model = OpenAIEmbeddings(api_key=st.secrets['openai']['OPENAI_API_KEY
 
 
 llm = ChatOpenAI(api_key=st.secrets['openai']['OPENAI_API_KEY'],
-                 model="gpt-4o-mini", temperature=0, max_tokens=200, top_p=0)
+                 model="gpt-4o-mini", temperature=0, max_tokens=500, top_p=0)
 
 
 db = Chroma(collection_name='wdb',persist_directory="./wdb", embedding_function=embeddings_model)
