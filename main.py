@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
 
 # Streamlitの設定
-st.set_page_config(page_title="Wフロントマニュアル", page_icon="📄", layout="wide")
+st.set_page_config(page_title="山崎本部長AI", page_icon="📄", layout="wide")
 
 # StreamlitのUI構築
 st.title("📄 山崎本部長AI")
