@@ -5,5 +5,5 @@
  __pycache__/
  ./config.py
 config.py
- notify-slack.py
- test.png
+notify-slack.py
+test.png
